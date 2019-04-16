@@ -8,7 +8,7 @@ from copy import deepcopy
 from .variables import BanditVariable, DiscreteVariable, CategoricalVariable, ContinuousVariable, create_variable
 from ..errors import InvalidConfigError
 from ...util.general import values_to_array, merge_values
-
+from ...util.model_func import model_predict
 
 class Design_space(object):
     """
