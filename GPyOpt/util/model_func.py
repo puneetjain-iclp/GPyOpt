@@ -35,7 +35,7 @@ def evaluate_rec(code, x=None, data_cols=None):
             raise(ne)
 
 
-def agg_constraint_min(w, dataset, agg_conv, aggc_rdiff, aggc_when, ):
+def agg_constraint_min(w, dataset, agg_conv, aggc_rdiff, aggc_when):
     df = cut_array(w)
     df = pd.DataFrame(df, columns=decision_cols)
     df = df.reset_index()
