@@ -1,4 +1,17 @@
 import numpy as np
+import pandas as pd
+import re
+
+
+def cut_array(x):
+    """
+        input x: array to cut in multiple arrays
+        return x: array of cut arrays
+        Cut an array in multiple array of the size of the decision_cols
+    """
+    x = np.array(x)
+    x.resize(int(len(x) / len(decision_cols)), len(decision_cols))
+    return x
 
 
 def model_predict(x):
