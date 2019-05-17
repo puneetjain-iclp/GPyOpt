@@ -2,6 +2,7 @@ import numpy as np
 import boto3
 import botocore
 import lightgbm as lgb
+from numba import jit
 
 # def model_predict(x):
 #     a = np.copy(x)
@@ -11,10 +12,9 @@ import lightgbm as lgb
 #     a[x > 5]= .1
 #     return a
 
-
+@jit
 def model_predict(x,data,model):
     n = np.empty((x.shape[0],x.shape[1]))
-    print(x.shape)
     col = data.columns
     for counter in range(0,x.shape[0]):
         if 'IPO_optimise_factor_Bronze' in col:
