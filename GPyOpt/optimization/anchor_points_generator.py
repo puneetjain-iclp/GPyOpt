@@ -84,7 +84,7 @@ class ThompsonSamplingAnchorPointsGenerator(AnchorPointsGenerator):
 
 class ObjectiveAnchorPointsGenerator(AnchorPointsGenerator):
 
-    def __init__(self, space, design_type, objective, num_samples=1000):
+    def __init__(self, space, design_type, objective, num_samples=500):
         '''
         From an initial design, it selects the locations with the minimum value according to some objective.
         :param model_space: set to true when the samples need to be obtained for the input domain of the model
@@ -99,7 +99,7 @@ class ObjectiveAnchorPointsGenerator(AnchorPointsGenerator):
 
 class RandomAnchorPointsGenerator(AnchorPointsGenerator):
 
-    def __init__(self, space, design_type, num_samples=10000):
+    def __init__(self, space, design_type, num_samples=500):
         '''
         From an initial design, it selects the locations randomly, according to the specified design_type generation scheme.
         :param model_space: set to true when the samples need to be obtained for the input domain of the model

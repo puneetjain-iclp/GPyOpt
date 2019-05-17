@@ -4,11 +4,28 @@
 import numpy as np
 import itertools
 from copy import deepcopy
+import os
+import pandas as pd
+import boto3
+import botocore
+import lightgbm as lgb
+from numba import jit
+
 
 from .variables import BanditVariable, DiscreteVariable, CategoricalVariable, ContinuousVariable, create_variable
 from ..errors import InvalidConfigError
 from ...util.general import values_to_array, merge_values
 from ...util.model_func import model_predict
+from ...util.feature_creation import *
+
+
+features_list = ['pricing_area_code', 'silver_rsp_rating_final', 'BornDateTime_day_of_year', 
+                 'endDate_day_of_year', 'startDate_day_of_year', 'silver_gtb_rating_final', 
+                 'bronze_rsp_rating_final', 'Bronze_RSP_from_data', 'Silver_RSP_from_data', 
+                 'gold_rsp_rating_final', 'bronze_gtb_rating_final', 'ST_MT_Duration', 'quote_GRPAGE',
+                 'Gold_RSP_from_data', 'areaCode', 'gold_gtb_rating_final', 'startDate_week_of_year', 
+                 'ageBand', 'endDate_week', 'startDate_week']
+
 
 class Design_space(object):
     """
@@ -343,6 +360,26 @@ class Design_space(object):
         return np.atleast_2d(np.concatenate(x_rounded))
 
 
+
+    @staticmethod
+    def Get_current_data(features_list):
+        data = pd.read_csv(os.getcwd() + '/data.csv')
+        data = LightGBM_transform(data)
+        return data,data[features_list]
+
+    @staticmethod
+    def load_model(s3_loc):
+        Key = "Columbus/model_base_lgbm.pkl"
+        bucket_name = "ccs-dpina-dev-ipo-codezone"
+        outPutName = "model.pkl"
+        s3 = boto3.resource('s3')
+        s3.Bucket(bucket_name).download_file(Key, outPutName)
+
+        with open('model.pkl', 'rb') as f:
+            return pickle.load(f)
+
+
+
 #################### ------ ALL THE REAMINING FUNCIONS ARE REDUNDANT NOW AND SHOULD BE DEPRECATED
 
 
@@ -446,3 +483,7 @@ def bounds_to_space(bounds):
     for k in range(len(bounds)):
         space += [{'name': 'var_'+str(k+1), 'type': 'continuous', 'domain':bounds[k], 'dimensionality':1}]
     return space
+
+data,model_data = Design_space.Get_current_data(features_list)
+model = Design_space.load_model(features_list)
+
