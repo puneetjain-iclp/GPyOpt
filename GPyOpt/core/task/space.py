@@ -79,11 +79,17 @@ class Design_space(object):
 
     supported_types = ['continuous', 'discrete', 'bandit','categorical']
 
-    def __init__(self, space, constraints=None, store_noncontinuous = False):
+    def __init__(self, space, constraints=None, store_noncontinuous = False,data= None,model_data = None, model_conv = None):
 
         ## --- Complete and expand attributes
         self.store_noncontinuous = store_noncontinuous
         self.config_space = space
+        self.data = data
+        self.model_data = model_data
+        self.model_conv = model_conv
+        globals()["model_data"] =  self.model_data
+        globals()["model_conv"] =  self.model_conv
+        globals()["data"] =  self.data
 
         ## --- Transform input config space into the objects used to run the optimization
         self._translate_space(self.config_space)
@@ -320,7 +326,7 @@ class Design_space(object):
         if self.constraints is not None:
             for d in self.constraints:
                 try:
-                    exec('constraint = lambda x:' + d['constraint'], globals())
+                    exec('constraint = lambda x:' + d['constraint'],globals())
                     ind_x = (constraint(x) <= 0) * 1
                     I_x *= ind_x.reshape(x.shape[0],1)
                 except:
@@ -483,7 +489,4 @@ def bounds_to_space(bounds):
     for k in range(len(bounds)):
         space += [{'name': 'var_'+str(k+1), 'type': 'continuous', 'domain':bounds[k], 'dimensionality':1}]
     return space
-
-data,model_data = Design_space.Get_current_data(features_list)
-model = Design_space.load_model(features_list)
 

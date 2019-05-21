@@ -13,9 +13,9 @@ from numba import jit
 #     return a
 
 @jit
-def model_predict(x,data,model):
+def model_predict(x,mod_data,model):
     n = np.empty((x.shape[0],x.shape[1]))
-    col = data.columns
+    col = mod_data.columns
     for counter in range(0,x.shape[0]):
         if 'IPO_optimise_factor_Bronze' in col:
             data['IPO_optimise_factor_Bronze'] = x[counter,:,0]
@@ -23,7 +23,7 @@ def model_predict(x,data,model):
             data['IPO_optimise_factor_Silver'] = x[counter,:,1]
         if 'IPO_optimise_factor_Gold' in col:
             data['IPO_optimise_factor_Gold'] = x[counter,:,2]
-        n[counter,:] =  model.predict_proba(data.values)[:,0]
+        n[counter,:] =  model.predict_proba(mod_data.values)[:,0]
     return n
 
 
