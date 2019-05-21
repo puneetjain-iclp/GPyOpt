@@ -18,11 +18,11 @@ def model_predict(x,mod_data,model):
     col = mod_data.columns
     for counter in range(0,x.shape[0]):
         if 'IPO_optimise_factor_Bronze' in col:
-            data['IPO_optimise_factor_Bronze'] = x[counter,:,0]
+            mod_data['IPO_optimise_factor_Bronze'] = x[counter,:,0]
         if 'IPO_optimise_factor_Silver' in col:
-            data['IPO_optimise_factor_Silver'] = x[counter,:,1]
+            mod_data['IPO_optimise_factor_Silver'] = x[counter,:,1]
         if 'IPO_optimise_factor_Gold' in col:
-            data['IPO_optimise_factor_Gold'] = x[counter,:,2]
+            mod_data['IPO_optimise_factor_Gold'] = x[counter,:,2]
         n[counter,:] =  model.predict_proba(mod_data.values)[:,0]
     return n
 
