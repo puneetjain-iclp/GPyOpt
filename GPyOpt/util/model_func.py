@@ -2,17 +2,17 @@ import numpy as np
 import boto3
 import botocore
 import lightgbm as lgb
-from numba import jit
+# from numba import jit
 
 # def model_predict(x):
 #     a = np.copy(x)
 #     a[x <= -5] = .8
-#     a[(x > -5) & (x <= 0)] = .6
-#     a[(x >0) & (x <= 5 )] = .4
-#     a[x > 5]= .1
-#     return a
+# #     a[(x > -5) & (x <= 0)] = .6
+# #     a[(x >0) & (x <= 5 )] = .4
+# #     a[x > 5]= .1
+# #     return a
 
-@jit
+# @jit
 def model_predict(x,mod_data,model):
     n = np.empty((x.shape[0],x.shape[1]))
     col = mod_data.columns

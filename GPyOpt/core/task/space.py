@@ -9,7 +9,7 @@ import pandas as pd
 import boto3
 import botocore
 import lightgbm as lgb
-from numba import jit
+# from numba import jit
 
 
 from .variables import BanditVariable, DiscreteVariable, CategoricalVariable, ContinuousVariable, create_variable
