@@ -23,7 +23,7 @@ def model_predict(x,mod_data,model):
             mod_data['IPO_optimise_factor_Silver'] = x[counter,:,1]
         if 'IPO_optimise_factor_Gold' in col:
             mod_data['IPO_optimise_factor_Gold'] = x[counter,:,2]
-        n[counter,:] =  model.predict_proba(mod_data.values)[:,0]
+        n[counter,:] =  model.predict_proba(mod_data.values)[:,1]
     return n
 
 
