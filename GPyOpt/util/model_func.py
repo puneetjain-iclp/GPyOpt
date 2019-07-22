@@ -1,5 +1,5 @@
 import numpy as np
-from numba import jit
+# from numba import jit
 import boto3
 import botocore
 import lightgbm as lgb
