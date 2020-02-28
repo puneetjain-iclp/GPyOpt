@@ -12,27 +12,55 @@ class RandomDesign(ExperimentDesign):
     def __init__(self, space):
         super(RandomDesign, self).__init__(space)
 
-    def get_samples(self, init_points_count):
+    def get_samples(self, init_points_count, escape_infinite_loop):
         if self.space.has_constraints():
-            return self.get_samples_with_constraints(init_points_count)
+            return self.get_samples_with_constraints(init_points_count, escape_infinite_loop)
         else:
             return self.get_samples_without_constraints(init_points_count)
 
-    def get_samples_with_constraints(self, init_points_count):
+    def get_samples_with_constraints(self, init_points_count, escape_infinite_loop):
         """
         Draw random samples and only save those that satisfy constraints
         Finish when required number of samples is generated
         """
         samples = np.empty((0, self.space.dimensionality))
 
+        print("samples.shape : ", samples.shape)
+
+        count = 0
+
         while samples.shape[0] < init_points_count:
             domain_samples = self.get_samples_without_constraints(init_points_count)
+
+            print("domain_samples.shape : ", domain_samples.shape)
+
             valid_indices = (self.space.indicator_constraints(domain_samples) == 1).flatten()
+
+            print("valid_indices.shape : ", valid_indices.shape)
+
             if sum(valid_indices) > 0:
                 valid_samples = domain_samples[valid_indices,:]
                 samples = np.vstack((samples,valid_samples))
+                print("samples.shape after vstack: ", samples.shape)
 
-        return samples[0:init_points_count,:]
+            count+=1
+            print(count)
+             
+            if count >2:
+                print("Not able to find space for given constraint.")
+                print("returned random samples of shape {}".format(domain_samples.shape))
+
+                break
+
+        if escape_infinite_loop:
+            if count > 2:
+                space =  (np.random.randint(low=-10,high=11,size=domain_samples.shape), count)
+            else:
+                space =  (samples[0:init_points_count,:], count)
+        else:
+            space = samples[0:init_points_count,:]
+        
+        return space
 
     def fill_noncontinous_variables(self, samples):
         """

@@ -109,7 +109,8 @@ class Design_space(object):
                 if 'constrain' in c:
                     c['constraint'] = c['constrain']
         self.constraints = constraints
-
+        print(constraints)
+        
     @staticmethod
     def fromConfig(space, constraints):
         import six
