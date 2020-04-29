@@ -19,8 +19,8 @@ def model_predict(x,mod_data,model):
     n = np.empty((x.shape[0],x.shape[1]))
     for counter in range(0,x.shape[0]):
         mod_data = create_features(mod_data,counter,x,elasticity_vars,col)        
-        n[counter,:] =  model.predict_proba(mod_data.values)[:,1]
-        # print(model.predict_proba(mod_data.values)[:,1].sum()/len(model.predict_proba(mod_data.values)[:,1]))
+        n[counter,:] =  model.predict(mod_data.values)
+        #print(model.predict(mod_data.values).sum()/len(model.predict(mod_data.values)))
     return n
 
 
